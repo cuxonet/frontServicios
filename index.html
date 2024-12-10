@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Manager</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+<header>
+    <h1>Expense Manager</h1>
+</header>
+<main>
+    <!-- =================== Filtros =================== -->
+    <section>
+        <h2>Lista de Gastos</h2>
+        <!-- Contenedor de filtros -->
+        <div id="filters-container">
+            <!-- Filtro Principal -->
+            <label for="filter-main">Filtrar por:</label>
+            <select id="filter-main">
+                <option value="all" selected>Todos los Gastos</option>
+                <option value="micro">Gastos Hormiga (Menores de 5€)</option>
+                <option value="high">Gastos Mayoritarios (Mayores de 100€)</option>
+            </select>
+
+            <!-- Subfiltro por Categoría -->
+            <label for="filter-category">Categoría:</label>
+            <select id="filter-category">
+                <option value="" selected>Selecciona una Categoría</option>
+                <option value="comida">Comida</option>
+                <option value="transporte">Transporte</option>
+                <option value="entretenimiento">Entretenimiento</option>
+                <option value="servicio">Servicio</option>
+                <option value="general">General</option>
+            </select>
+
+            <!-- Botón para Aplicar Filtros -->
+            <button id="apply-filters">Aplicar Filtros</button>
+        </div>
+    </section>
+
+    <!-- =================== Tabla de Gastos =================== -->
+    <section>
+        <table id="expenses-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Descripción</th>
+                <th>Monto</th>
+                <th>Tipo</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Filas dinámicas generadas por JavaScript -->
+            </tbody>
+        </table>
+    </section>
+
+    <!-- =================== Formulario: Añadir Gasto =================== -->
+    <section>
+        <h2>Añadir Nuevo Gasto</h2>
+        <div class="card"> <!-- Añadimos un contenedor con clase "card" -->
+            <form id="expense-form">
+
+                <input type="text" id="description" placeholder="Descripción" required>
+                <input type="number" id="amount" placeholder="Monto" required>
+                <select id="type" required>
+                    <option value="" disabled selected>Selecciona Tipo</option>
+                    <option value="comida">Comida</option>
+                    <option value="transporte">Transporte</option>
+                    <option value="entretenimiento">Entretenimiento</option>
+                    <option value="servicio">Servicio</option>
+                    <option value="general">General</option>
+                </select>
+                <button type="submit">Añadir Gasto</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- =================== Totales =================== -->
+    <!-- =================== Sección de Cálculos =================== -->
+    <section id="calculations">
+        <h2>Cálculos</h2>
+
+        <!-- Botón para calcular la suma total -->
+        <div class="calculation-total">
+            <button id="calculate-total">Mostrar Suma Total</button>
+            <p id="total-display">Total: -</p> <!-- Para mostrar la suma total -->
+        </div>
+
+        <!-- Filtro por categoría para calcular la suma -->
+        <div class="calculation-category">
+            <label for="category-select">Categoría:</label>
+            <select id="category-select">
+                <option value="" selected>Selecciona una Categoría</option>
+                <option value="comida">Comida</option>
+                <option value="transporte">Transporte</option>
+                <option value="entretenimiento">Entretenimiento</option>
+                <option value="servicio">Servicio</option>
+                <option value="general">General</option>
+            </select>
+            <button id="calculate-category-total">Calcular Suma por Categoría</button>
+            <p id="category-total-display">Total por Categoría: -</p> <!-- Para mostrar la suma por categoría -->
+        </div>
+    </section>
+
+
+    <!-- =================== Footer =================== -->
+<footer>
+    <p>&copy; 2024 Expense Manager. Todos los derechos reservados.</p>
+</footer>
+<script src="scripts/app.js"></script>
+</body>
+</html>
+

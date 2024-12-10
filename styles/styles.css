@@ -1,0 +1,209 @@
+/* Estilo general */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #007BFF;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+}
+
+header h1 {
+    margin: 0;
+}
+
+main {
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+table th {
+    background-color: #007BFF;
+    color: white;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Estilo para botones en la tabla (acciones) */
+table button {
+    padding: 5px 10px;
+    background-color: #FF4136;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+table button:hover {
+    background-color: #E12E24;
+}
+
+/* Formulario */
+form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+form input, form select, form button {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+form button {
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+/* Botones generales */
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-right: 10px;
+    background-color: #007BFF;
+    color: white;
+}
+
+button:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+/* Estilo para la sección de filtros */
+section h2 {
+    margin-bottom: 10px;
+}
+
+label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+select {
+    padding: 5px;
+    font-size: 14px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Botón del filtro */
+#filter-button {
+    background-color: #28A745;
+    color: white;
+}
+
+#filter-button:hover {
+    background-color: #218838;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #f4f4f4;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+}
+/* Estilo para la tarjeta */
+.card {
+    border: 1px solid #ddd; /* Borde gris claro */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    padding: 20px; /* Espaciado interno */
+    background-color: #fff; /* Fondo blanco */
+    max-width: 400px; /* Ancho máximo */
+    margin: 20px auto; /* Centrar la tarjeta horizontalmente */
+}
+
+/* Estilo para los elementos dentro del formulario */
+#expense-form input,
+#expense-form select,
+#expense-form button {
+    display: block;
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+    margin-bottom: 15px; /* Espaciado entre elementos */
+    padding: 10px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño de texto */
+    border: 1px solid #ccc; /* Borde de los inputs */
+    border-radius: 4px; /* Bordes redondeados */
+}
+
+/* Estilo para el botón de enviar */
+#expense-form button {
+    background-color: #007bff; /* Azul suave */
+    color: white; /* Texto blanco */
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#expense-form button:hover {
+    background-color: #0056b3; /* Azul más oscuro al pasar el ratón */
+}
+/* Estilo para la barra de navegación */
+.navbar {
+    background-color: #007bff; /* Azul suave */
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.navbar ul {
+    list-style-type: none; /* Eliminar viñetas */
+    margin: 0;
+    padding: 0;
+    display: flex; /* Mostrar elementos en línea */
+    justify-content: center; /* Centrar los botones */
+}
+
+.navbar ul li {
+    margin: 0 15px; /* Espaciado entre botones */
+}
+
+.navbar ul li a {
+    text-decoration: none; /* Eliminar subrayado */
+    color: white; /* Texto blanco */
+    font-size: 18px; /* Tamaño de fuente */
+    padding: 8px 16px; /* Espaciado interno del botón */
+    border-radius: 4px; /* Bordes redondeados */
+    transition: background-color 0.3s ease; /* Transición suave */
+}
+
+.navbar ul li a:hover {
+    background-color: #0056b3; /* Azul más oscuro al pasar el ratón */
+}
