@@ -56,28 +56,33 @@ function authenticatedFetch(url, options = {}) {
 function addExpense(event) {
     event.preventDefault();
 
-
     const description = document.getElementById("description").value;
     const amount = parseFloat(document.getElementById("amount").value);
     const expenseType = document.getElementById("type").value;
 
     const expenseData = {
-
         description: description,
         amount: amount,
         expenseType: expenseType
     };
 
-    fetch(API_BASE_URL, {
+    // Recuperar el token desde localStorage
+    const token = localStorage.getItem("jwtToken");
+
+    // Usar authenticatedFetch para incluir el token en la solicitud
+    authenticatedFetch(API_BASE_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(expenseData)
+        headers: {
+            "Content-Type": "application/json", // Asegurar encabezado JSON
+            "Authorization": `Bearer ${token}` // Incluir el token en el encabezado
+        },
+        body: JSON.stringify(expenseData) // Incluir el cuerpo de la solicitud
     })
         .then(response => {
             if (response.ok) {
                 alert("Gasto añadido correctamente.");
                 document.getElementById("expense-form").reset();
-                fetchAllExpenses();
+                fetchAllExpenses(); // Refrescar la tabla
             } else {
                 return response.json().then(error => {
                     console.error("Error del servidor:", error);
@@ -90,6 +95,7 @@ function addExpense(event) {
             alert("No se pudo conectar al servidor.");
         });
 }
+
 
 // Función: Obtener todos los gastos (GET /gastos)
 async function fetchAllExpenses() {
@@ -107,28 +113,61 @@ async function fetchAllExpenses() {
 // Función: Obtener gastos hormiga (GET /micro)
 async function fetchMicroExpenses() {
     try {
-        const response = await fetch(`${API_BASE_URL}/micro`);
-        if (!response.ok) throw new Error("Error al obtener gastos hormiga");
+
+        const token = localStorage.getItem("jwtToken");
+        console.log("Token recuperado del localStorage:", token);
+
+        // Realizar la solicitud utilizando authenticatedFetch
+        const response = await authenticatedFetch(`${API_BASE_URL}/micro`);
+        console.log("Respuesta recibida del servidor:", response);
+
+        // Verificar si la respuesta es válida
+        if (!response.ok) {
+            console.error("Error al obtener gastos hormiga. Estado:", response.status, response.statusText);
+            throw new Error("Error al obtener gastos hormiga");
+        }
+
+        // Parsear el JSON de la respuesta
         const expenses = await response.json();
+        console.log("Datos obtenidos de la API (gastos hormiga):", expenses);
+
+        // Renderizar los gastos en la tabla
         renderExpenses(expenses);
+        console.log("Gastos hormiga renderizados correctamente.");
     } catch (error) {
-        console.error("Error:", error);
+        console.error("Error en la solicitud fetchMicroExpenses:", error);
         alert("No se pudieron cargar los gastos hormiga.");
     }
 }
 
+
 // Función: Obtener gastos mayoritarios (GET /high)
 async function fetchHighExpenses() {
     try {
-        const response = await fetch(`${API_BASE_URL}/high`);
+        // Recuperar el token desde localStorage (se añade este paso)
+        const token = localStorage.getItem("jwtToken");
+
+        // Usar authenticatedFetch para incluir el token en el encabezado Authorization (se cambia fetch por authenticatedFetch)
+        const response = await authenticatedFetch(`${API_BASE_URL}/high`, {
+            method: "GET", // Asegurar el método GET
+            headers: { "Content-Type": "application/json" } // Incluir encabezados básicos
+        });
+
+        // Verificar si la respuesta es válida
         if (!response.ok) throw new Error("Error al obtener gastos mayoritarios");
+
+        // Parsear la respuesta JSON
         const expenses = await response.json();
+
+        // Renderizar los gastos en la tabla
         renderExpenses(expenses);
     } catch (error) {
+        // Manejo de errores
         console.error("Error:", error);
         alert("No se pudieron cargar los gastos mayoritarios.");
     }
 }
+
 
 // Función: Renderizar los gastos en la tabla
 function renderExpenses(expenses) {
@@ -212,10 +251,17 @@ function saveRowEditing(row) {
         expenseType: expenseType
     };
 
-    fetch(`${API_BASE_URL}/${idExpense}`, {
+    // Recuperar el token desde localStorage
+    const token = localStorage.getItem("jwtToken");
+
+    // Usar authenticatedFetch para incluir el token en la solicitud
+    authenticatedFetch(`${API_BASE_URL}/${idExpense}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedExpense)
+        headers: {
+            "Content-Type": "application/json", // Asegurar encabezado JSON
+            "Authorization": `Bearer ${token}` // Incluir el token en el encabezado
+        },
+        body: JSON.stringify(updatedExpense) // Incluir el cuerpo de la solicitud
     })
         .then(response => {
             if (response.ok) {
@@ -234,6 +280,7 @@ function saveRowEditing(row) {
         });
 }
 
+
 // Función: Cancelar edición de una fila
 function cancelRowEditing(row) {
     fetchAllExpenses(); // Volver a cargar los datos desde el backend
@@ -241,8 +288,15 @@ function cancelRowEditing(row) {
 
 // Función: Eliminar un gasto (DELETE)
 function deleteExpense(idExpense) {
-    fetch(`${API_BASE_URL}/${idExpense}`, {
-        method: "DELETE"
+    // Recuperar el token desde localStorage
+    const token = localStorage.getItem("jwtToken");
+
+    // Usar authenticatedFetch para incluir el token en la solicitud
+    authenticatedFetch(`${API_BASE_URL}/${idExpense}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${token}` // Agregar el token al encabezado
+        }
     })
         .then(response => {
             if (response.ok) {
@@ -257,19 +311,38 @@ function deleteExpense(idExpense) {
         });
 }
 
+
+
 // Función: Obtener suma total de gastos (GET /gastos/total)
 async function fetchTotalExpenses() {
     try {
-        const response = await fetch(`${API_BASE_URL}/total`);
-        if (!response.ok) throw new Error("Error al obtener la suma total");
+        // Recuperar el token desde localStorage
+        const token = localStorage.getItem("jwtToken");
+
+        // Usar authenticatedFetch para incluir el token en la solicitud
+        const response = await authenticatedFetch(`${API_BASE_URL}/total`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Error al obtener la suma total");
+        }
+
+        // Parsear la respuesta JSON
         const total = await response.json();
 
-        totalDisplay.textContent = `Total: ${total} €`; // Mostrar el resultado
+        // Mostrar el total en el frontend
+        totalDisplay.textContent = `Total: ${total} €`;
     } catch (error) {
         console.error("Error:", error);
         alert("No se pudo obtener la suma total de gastos.");
     }
 }
+
 
 // Función: Obtener suma por categoría (GET /gastos/tipo/{expenseType})
 async function fetchTotalByCategory() {
@@ -281,35 +354,59 @@ async function fetchTotalByCategory() {
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}/tipo/${selectedCategory}`);
+        // Recuperar el token desde localStorage
+        const token = localStorage.getItem("jwtToken");
+
+        // Usar authenticatedFetch para incluir el token en la solicitud
+        const response = await authenticatedFetch(`${API_BASE_URL}/tipo/${selectedCategory}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json", // Asegurar encabezado JSON
+                "Authorization": `Bearer ${token}` // Incluir el token en el encabezado
+            }
+        });
+
         if (!response.ok) throw new Error(`Error al obtener la suma de la categoría: ${selectedCategory}`);
         const total = await response.json();
 
+        // Mostrar el total en el frontend
         categoryTotalDisplay.textContent = `Total por Categoría: ${total} €`;
     } catch (error) {
         console.error("Error:", error);
         alert(`No se pudo obtener la suma de la categoría: ${selectedCategory}`);
     }
 }
+
 async function fetchExpensesByCategory(expenseType) {
     try {
-        // Validación: No hacer nada si expenseType es una cadena vacía
         if (!expenseType) {
-            console.warn("No se seleccionó una categoría válida.");
             alert("Por favor, selecciona una categoría válida.");
             return;
         }
 
-        const response = await fetch(`${API_BASE_URL}/agrupados/${expenseType}`);
+        // Recuperar el token desde localStorage
+        const token = localStorage.getItem("jwtToken");
+
+        // Usar authenticatedFetch para incluir el token en la solicitud
+        const response = await authenticatedFetch(`${API_BASE_URL}/agrupados/${expenseType}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json", // Asegurar encabezado JSON
+                "Authorization": `Bearer ${token}` // Incluir el token en el encabezado
+            }
+        });
+
         if (!response.ok) throw new Error(`Error al obtener los gastos de categoría: ${expenseType}`);
         const expenses = await response.json();
 
-        renderExpenses(expenses); // Renderizar los resultados en la tabla
+        // Renderizar los gastos en la tabla
+        renderExpenses(expenses);
     } catch (error) {
         console.error("Error:", error);
         alert(`No se pudieron cargar los gastos de la categoría: ${expenseType}`);
     }
 }
+
 
 // =================== Eventos ===================
 document.addEventListener("DOMContentLoaded", async () => {
